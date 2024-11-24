@@ -52,8 +52,8 @@ const fallbackColor = fallbackCSSVar(primary, secondary, '#default')
 ```typescript
 import { assignCSSVar, createCSSVar } from '@builtbyfield/css-utils'
 const bgColor = createCSSVar('background-color')
-const cssVar = assignCSSVar(bgColor, '#ffffff')
-// Result: { name: '--background-color', value: '#ffffff' }
+const cssVar = assignCSSVar(bgColor, "#ffffff");
+// Result: { '--background-color': '#ffffff' }
 ```
 
 ### Validation Functions

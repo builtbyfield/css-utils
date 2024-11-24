@@ -8,7 +8,21 @@
  * @see https://github.com/vanilla-extract-css/vanilla-extract/tree/master/packages/utils
  */
 
+/**
+ * The operator to use in a CSS calc expression.
+ *
+ * @example
+ * '+', '-', '*', '/'
+ */
 export type Operator = "+" | "-" | "*" | "/";
+
+/**
+ * The operand to use in a CSS calc expression.
+ * Can be a string, number, or a CalcChain.
+ *
+ * @example
+ * '1px', 2, calc.add('1px', '2rem')
+ */
 export type Operand = string | number | CalcChain;
 
 /**
@@ -88,6 +102,13 @@ const negate = (x: Operand) => multiply(x, -1);
 
 /**
  * A chainable interface for creating CSS calc expressions.
+ *
+ * @example
+ * calc('10px')
+ *   .add('2rem')
+ *   .multiply(2)
+ *   .divide(3)
+ *   .toString()
  */
 export type CalcChain = {
   add: (...operands: Array<Operand>) => CalcChain;

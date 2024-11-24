@@ -24,9 +24,6 @@ export type CSSVarFunction =
 
 /**
  * CSS variable definition object
+ * @example { '--my-var': '#fff', '--color-primary': 'red' }
  */
-export interface CSSVarDefinition {
-  name: CSSVarName;
-  value: string | null;
-  fallback?: string;
-}
+export type CSSVarDefinition = Record<CSSVarName, string | null>;

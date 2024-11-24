@@ -31,6 +31,7 @@ describe("CSS Variable Name Validation", () => {
     });
 
     it("should reject names with spaces", () => {
+      expect(isValidCSSVarName(" ")).toBe(false);
       expect(isValidCSSVarName("foo bar")).toBe(false);
       expect(isValidCSSVarName(" foo")).toBe(false);
       expect(isValidCSSVarName("foo ")).toBe(false);
@@ -122,10 +123,23 @@ describe("fallbackCSSVar", () => {
     expect(fallback).toBe("var(--foo, var(--baz, 12))");
   });
 
+  it("all but last must be valid CSS variable functions", () => {
+    const fooVar = createCSSVar("foo");
+    const bazVar = createCSSVar("baz");
+    expect(() => fallbackCSSVar(fooVar, "12", bazVar)).toThrow();
+  });
+
   it("should handle calc expressions", () => {
     const widthVar = createCSSVar("width");
     const fallback = fallbackCSSVar(widthVar, "calc(100% - 20px)");
     expect(fallback).toBe("var(--width, calc(100% - 20px))");
+  });
+
+  it("should throw when creating invalid CSS variable function", () => {
+    const invalidVar = "not-a-var-function";
+    expect(() => fallbackCSSVar(invalidVar, "red")).toThrow(
+      "All values except the last must be valid CSS variable functions"
+    );
   });
 });
 
@@ -147,32 +161,28 @@ describe("assignCSSVar", () => {
   it("should assign string value", () => {
     const fooVar = createCSSVar("foo");
     expect(assignCSSVar(fooVar, "baz")).toEqual({
-      name: "--foo",
-      value: "baz",
+      "--foo": "baz",
     });
   });
 
   it("should assign number value", () => {
     const numberVar = createCSSVar("spacing");
     expect(assignCSSVar(numberVar, "12")).toEqual({
-      name: "--spacing",
-      value: "12",
+      "--spacing": "12",
     });
   });
 
   it("should handle CSS functions", () => {
     const colorVar = createCSSVar("overlay-color");
     expect(assignCSSVar(colorVar, "rgba(0, 0, 0, 0.5)")).toEqual({
-      name: "--overlay-color",
-      value: "rgba(0, 0, 0, 0.5)",
+      "--overlay-color": "rgba(0, 0, 0, 0.5)",
     });
   });
 
   it("should handle calc expressions", () => {
     const widthVar = createCSSVar("container-width");
     expect(assignCSSVar(widthVar, "calc(100% - 2rem)")).toEqual({
-      name: "--container-width",
-      value: "calc(100% - 2rem)",
+      "--container-width": "calc(100% - 2rem)",
     });
   });
 
@@ -180,5 +190,26 @@ describe("assignCSSVar", () => {
     const testVar = createCSSVar("test");
     // @ts-expect-error - testing undefined value
     expect(() => assignCSSVar(testVar, undefined)).toThrow();
+  });
+
+  it("should throw on invalid variable name format", () => {
+    // @ts-expect-error - testing invalid input
+    expect(() => assignCSSVar("invalid-var", "value")).toThrow(
+      "Invalid CSS variable name"
+    );
+  });
+
+  it("should throw on malformed var function", () => {
+    // @ts-expect-error - testing invalid input
+    expect(() => assignCSSVar("var(invalid)", "value")).toThrow(
+      "Invalid CSS variable name"
+    );
+  });
+
+  it("should handle null value", () => {
+    const testVar = createCSSVar("test");
+    expect(assignCSSVar(testVar, null)).toEqual({
+      "--test": null,
+    });
   });
 });

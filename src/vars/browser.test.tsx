@@ -26,10 +26,10 @@ function TestComponent({
 describe("CSS Variables Browser Tests", () => {
   it("should apply a basic CSS variable", () => {
     const colorVar = createCSSVar("color");
-    const { name, value } = assignCSSVar(colorVar, "red");
+    const { "--color": value } = assignCSSVar(colorVar, "red");
 
     // Set the CSS variable at root level
-    document.documentElement.style.setProperty(name, value);
+    document.documentElement.style.setProperty("--color", value);
 
     render(<TestComponent cssVar={colorVar} />);
 
@@ -39,9 +39,12 @@ describe("CSS Variables Browser Tests", () => {
 
   it("should handle complex values like rgba", () => {
     const colorVar = createCSSVar("complex-color");
-    const { name, value } = assignCSSVar(colorVar, "rgba(255, 0, 0, 0.5)");
+    const { "--complex-color": value } = assignCSSVar(
+      colorVar,
+      "rgba(255, 0, 0, 0.5)"
+    );
 
-    document.documentElement.style.setProperty(name, value);
+    document.documentElement.style.setProperty("--complex-color", value);
 
     render(<TestComponent cssVar={colorVar} />);
 
@@ -52,9 +55,9 @@ describe("CSS Variables Browser Tests", () => {
 
   it("should handle calc expressions", () => {
     const widthVar = createCSSVar("width");
-    const { name, value } = assignCSSVar(widthVar, "calc(100% - 20px)");
+    const { "--width": value } = assignCSSVar(widthVar, "calc(100% - 20px)");
 
-    document.documentElement.style.setProperty(name, value);
+    document.documentElement.style.setProperty("--width", value);
 
     render(
       <div style={{ width: "200px" }}>

@@ -43,6 +43,11 @@ const textColor = createCSSVar('text-color', { fallback: '#000' })
 // Fallback chain
 const color = fallbackCSSVar('--primary', '--secondary', '#default')
 // Result: var(--primary, var(--secondary, #default))
+
+// Assign a value to a CSS variable
+const cssVar = assignCSSVar(bgColor, "#ffffff");
+// Result: { '--background-color': '#ffffff' }
+// Use case: style={{ ...assignCSSVar(bgColor, "#ffffff") }}
 ```
 
 [Read more about CSS Variables Utility](src/vars/README.md)
@@ -97,6 +102,7 @@ Both utilities include robust error handling:
 ## Browser Support
 
 This library is designed for modern browsers that support:
+
 - CSS Custom Properties (CSS Variables)
 - CSS `calc()` function
 
