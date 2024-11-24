@@ -30,7 +30,7 @@ pnpm add @builtbyfield/css-utils
 Create and manage CSS Custom Properties with type safety:
 
 ```typescript
-import { createCSSVar, fallbackCSSVar } from '@builtbyfield/css-utils'
+import { assignCSSVar, createCSSVar, fallbackCSSVar } from '@builtbyfield/css-utils'
 
 // Simple variable
 const bgColor = createCSSVar('background-color')
@@ -90,15 +90,6 @@ import type {
 } from '@builtbyfield/css-utils'
 ```
 
-## Error Handling
-
-Both utilities include robust error handling:
-
-- Validation of CSS variable names
-- Type checking for calc operations
-- Descriptive error messages
-- Runtime checks for invalid inputs
-
 ## Browser Support
 
 This library is designed for modern browsers that support:
@@ -113,4 +104,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ## Acknowledgments
 
 - CSS Calc utility was inspired by [@vanilla-extract/css-utils](https://github.com/vanilla-extract-css/vanilla-extract/tree/master/packages/utils)
-- CSS Variables utility was loosely inspired by [vanilla-extract](https://vanilla-extract.style/)'s `vars.ts`
+- CSS Variables utility was loosely inspired by parts of [vanilla-extract](https://vanilla-extract.style/)'s `vars.ts`
