@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS Variables Library Test</title>
+    <style>
+      /* Test basic variable definitions */
+      :root {
+        --primary-color: #3498db;
+        --secondary-color: #2ecc71;
+        --text-color: #333;
+        --spacing: 1rem;
+        --invalid-name: red; /* Space to test validation */
+        ---invalid-triple: blue; /* Invalid triple dash */
+      }
+
+      /* Test containers for visual verification */
+      .test-container {
+        margin: 20px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      /* Test elements */
+      .color-box {
+        width: 100px;
+        height: 100px;
+        margin: 10px;
+        display: inline-block;
+      }
+
+      /* Test fallback scenarios */
+      .fallback-test {
+        color: var(--non-existent-color, red);
+        background: var(--another-non-existent, var(--primary-color, #000));
+      }
+
+      /* Output container styling */
+      #output {
+        font-family: monospace;
+        white-space: pre-wrap;
+        background: #f5f5f5;
+        padding: 15px;
+        margin: 10px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>CSS Variables Library Test Page</h1>
+
+    <div class="test-container">
+      <h2>Basic Variable Tests</h2>
+      <div id="output"></div>
+      <button id="run-tests">Run Tests</button>
+    </div>
+
+    <div class="test-container">
+      <h2>Visual Tests</h2>
+      <div class="color-box" id="primary-box"></div>
+      <div class="color-box" id="secondary-box"></div>
+      <div class="color-box" id="fallback-box"></div>
+    </div>
+
+    <script type="module">
+      import {
+        createCSSVar,
+        fallbackCSSVar,
+        assignCSSVar,
+        isValidCSSVarName,
+        isCSSVarName,
+        getCSSVarName,
+      } from "./index.ts";
+
+      function runTests() {
+        const output = document.getElementById("output");
+        const results = [];
+
+        // Test createCSSVar
+        try {
+          const primaryVar = createCSSVar("primary-color");
+          results.push(`✅ createCSSVar: ${primaryVar}`);
+
+          const withFallback = createCSSVar("test-color", { fallback: "#fff" });
+          results.push(`✅ createCSSVar with fallback: ${withFallback}`);
+        } catch (e) {
+          results.push(`❌ createCSSVar error: ${e.message}`);
+        }
+
+        // Test fallbackCSSVar
+        try {
+          const fallbackChain = fallbackCSSVar(
+            "var(--primary)",
+            "var(--secondary)",
+            "#000"
+          );
+          results.push(`✅ fallbackCSSVar: ${fallbackChain}`);
+        } catch (e) {
+          results.push(`❌ fallbackCSSVar error: ${e.message}`);
+        }
+
+        // Test validation
+        const validationTests = [
+          "--valid-name",
+          "--123invalid",
+          "--valid_name",
+          "--VALID-name",
+          "---invalid",
+          "invalid",
+          "--invalid name",
+        ];
+
+        validationTests.forEach((name) => {
+          const isValid = isCSSVarName(name);
+          results.push(
+            `${isValid ? "✅" : "❌"} isCSSVarName: "${name}" is ${
+              isValid ? "valid" : "invalid"
+            }`
+          );
+        });
+
+        // Test assignCSSVar
+        try {
+          const assignment = assignCSSVar("var(--test-var)", "#fff");
+          results.push(`✅ assignCSSVar: ${JSON.stringify(assignment)}`);
+        } catch (e) {
+          results.push(`❌ assignCSSVar error: ${e.message}`);
+        }
+
+        // Update visual tests
+        const primaryBox = document.getElementById("primary-box");
+        const secondaryBox = document.getElementById("secondary-box");
+        const fallbackBox = document.getElementById("fallback-box");
+
+        primaryBox.style.backgroundColor = "var(--primary-color)";
+        secondaryBox.style.backgroundColor = "var(--secondary-color)";
+        fallbackBox.style.backgroundColor =
+          "var(--non-existent, var(--primary-color, black))";
+
+        // Display results
+        output.textContent = results.join("\n");
+      }
+
+      document.getElementById("run-tests")?.addEventListener("click", runTests);
+    </script>
+  </body>
+</html>

@@ -1,16 +1,66 @@
 {
-  "name": "css-utils",
+  "name": "@builtbyfield/css-utils",
   "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "description": "CSS utility functions",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:manual": "vite",
+    "prepublishOnly": "npm run build",
+    "prepare": "npm run build"
   },
-  "keywords": [],
+  "dependencies": {
+    "cssesc": "^3.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.15.0",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react": "^16.0.1",
+    "@types/cssesc": "^3.0.2",
+    "@types/node": "^22.9.3",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitest/coverage-v8": "latest",
+    "eslint": "^9.15.0",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "globals": "^15.12.0",
+    "happy-dom": "^15.11.6",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.15.0",
+    "vite": "^5.4.11",
+    "vitest": "latest"
+  },
+  "keywords": [
+    "css",
+    "typescript",
+    "calc",
+    "vars",
+    "custom properties"
+  ],
   "author": {
     "name": "Jesse McLean",
     "email": "jesse@builtbyfield.com",
     "url": "https://builtbyfield.com"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/builtbyfield/css-utils.git"
+  },
+  "bugs": {
+    "url": "https://github.com/builtbyfield/css-utils/issues"
+  },
+  "homepage": "https://github.com/builtbyfield/css-utils"
 }
